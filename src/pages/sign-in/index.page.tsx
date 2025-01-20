@@ -19,8 +19,14 @@ import googleLogo from '@/assets/google-logo.svg'
 import githubLogo from '@/assets/github-logo.svg'
 import visiterLogo from '@/assets/visiter-logo.svg'
 
+import { signIn } from 'next-auth/react'
+
 export default function SignIn() {
   const router = useRouter()
+
+  async function handleSignInWithGithub() {
+    await signIn('github')
+  }
 
   function handleAccessHasVisitor() {
     router.push('/')
@@ -55,6 +61,7 @@ export default function SignIn() {
               image={githubLogo}
               imageAlt="Github Logo"
               text="Entrar com GitHub"
+              onClick={handleSignInWithGithub}
             />
             <SignInProviderButton
               image={visiterLogo}
