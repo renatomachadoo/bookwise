@@ -7,6 +7,10 @@ export const globalStyles = globalCss({
     margin: 0,
   },
 
+  'body, input, textarea, button': {
+    fontFamily: '$default',
+  },
+
   body: {
     backgroundColor: '$gray800',
     color: '$gray100',
