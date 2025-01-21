@@ -20,6 +20,7 @@ export const NavigationMenuContainer = styled('div', {
 })
 
 export const NavigationItemsContainer = styled('ul', {
+  width: 110,
   marginTop: '4rem',
   display: 'flex',
   flexDirection: 'column',
