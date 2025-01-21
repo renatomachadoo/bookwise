@@ -20,6 +20,9 @@ import githubLogo from '@/assets/github-logo.svg'
 import visiterLogo from '@/assets/visiter-logo.svg'
 
 import { signIn } from 'next-auth/react'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '../api/auth/[...nextauth].api'
+import { GetServerSideProps } from 'next'
 
 export default function SignIn() {
   const router = useRouter()
@@ -74,4 +77,23 @@ export default function SignIn() {
       </SignInWelcomeContainer>
     </SignInContainer>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  const session = await getServerSession(req, res, authOptions)
+
+  if (session) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    }
+  }
+
+  return {
+    props: {
+      session,
+    },
+  }
 }
