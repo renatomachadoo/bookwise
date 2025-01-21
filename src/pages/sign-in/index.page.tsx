@@ -27,6 +27,10 @@ import { GetServerSideProps } from 'next'
 export default function SignIn() {
   const router = useRouter()
 
+  async function handleSignInWithGoogle() {
+    await signIn('google')
+  }
+
   async function handleSignInWithGithub() {
     await signIn('github')
   }
@@ -38,7 +42,7 @@ export default function SignIn() {
   return (
     <SignInContainer>
       <SignInBanner>
-        <Image src={bannerImage} width={598} alt="Person reading" />
+        <Image src={bannerImage} width={598} alt="A girl reading a book" />
         <SignInLogo>
           <Image
             src={bookWiseLogo}
@@ -59,6 +63,7 @@ export default function SignIn() {
               image={googleLogo}
               imageAlt="Google Logo"
               text="Entrar com Google"
+              onClick={handleSignInWithGoogle}
             />
             <SignInProviderButton
               image={githubLogo}
@@ -92,8 +97,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   }
 
   return {
-    props: {
-      session,
-    },
+    props: {},
   }
 }
