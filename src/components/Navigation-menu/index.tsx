@@ -73,12 +73,14 @@ export function NavigationMenu() {
           </Link>
         </NavigationItem>
 
-        <NavigationItem active={pathname === '/profile'}>
-          <Link href="/profile">
-            <User />
-            Perfil
-          </Link>
-        </NavigationItem>
+        {isAuthenticated && (
+          <NavigationItem active={pathname === '/profile'}>
+            <Link href="/profile">
+              <User />
+              Perfil
+            </Link>
+          </NavigationItem>
+        )}
       </NavigationItemsContainer>
 
       {isAuthenticated ? (
