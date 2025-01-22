@@ -44,4 +44,6 @@ next-env.d.ts
 # prisma
 prisma/*
 !prisma/schema.prisma
+!prisma/seed.ts
+!prisma/constants
 

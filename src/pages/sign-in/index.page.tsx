@@ -13,7 +13,7 @@ import {
 import bannerImage from '@/assets/sign-in-banner.png'
 import bookWiseLogo from '@/assets/bookwise-logo.svg'
 
-import { SignInProviderButton } from '@/components/Sign-in-provider-button'
+import { SignInProviderButton } from '@/components/sign-in-provider-button'
 
 import googleLogo from '@/assets/google-logo.svg'
 import githubLogo from '@/assets/github-logo.svg'
