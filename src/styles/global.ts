@@ -11,6 +11,12 @@ export const globalStyles = globalCss({
     fontFamily: '$default',
   },
 
+  'input, button, textarea': {
+    '&:focus': {
+      boxShadow: '0 0 0 2px $colors$gray500',
+    },
+  },
+
   body: {
     backgroundColor: '$gray800',
     color: '$gray100',

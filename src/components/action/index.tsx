@@ -1,7 +1,8 @@
+import { ComponentProps } from 'react'
 import { Icon } from '@phosphor-icons/react'
 import { ActionContainer } from './styles'
 
-interface ButtonProps {
+interface ButtonProps extends ComponentProps<typeof ActionContainer> {
   text: string
   icon?: Icon
   iconBefore?: boolean
@@ -15,9 +16,10 @@ export function Action({
   size = 'md',
   variant = 'purple',
   iconBefore = false,
+  ...rest
 }: ButtonProps) {
   return (
-    <ActionContainer size={size} color={variant}>
+    <ActionContainer size={size} color={variant} {...rest}>
       {iconBefore && Icon && <Icon />}
       {text}
       {!iconBefore && Icon && <Icon />}

@@ -18,7 +18,12 @@ export default function Home() {
         <main>
           <div>
             <SectionDivider text="Sua última leitura">
-              <Action text="Ver todas" icon={CaretRight} size="sm" />
+              <Action
+                size="sm"
+                onClick={() => console.log('ola')}
+                text="Ver todas"
+                icon={CaretRight}
+              />
             </SectionDivider>
           </div>
           <div>2</div>
