@@ -12,7 +12,12 @@ export const HomeContainer = styled('div', {
 export const HomeContentContainer = styled('div', {
   width: '100%',
   height: '100%',
-  display: 'grid',
-  gridTemplateColumns: 'auto auto',
-  gap: '4rem',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '$10',
+
+  '> header': {
+    marginTop: '3.25rem',
+    marginBottom: '$10',
+  },
 })
