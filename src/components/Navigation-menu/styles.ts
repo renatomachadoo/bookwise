@@ -1,5 +1,4 @@
 import { styled } from '@/styles'
-import * as RadixAvatar from '@radix-ui/react-avatar'
 
 export const NavigationMenuContainer = styled('div', {
   height: '100%',
@@ -150,46 +149,6 @@ export const LogoutButton = styled('button', {
 
   margin: 'auto 0 $6',
   padding: '0 1rem',
-})
-
-export const Avatar = styled(RadixAvatar.Root, {
-  width: 32,
-  height: 32,
-  borderRadius: 9999,
-
-  border: 1,
-
-  position: 'relative',
-
-  img: {
-    width: '100%',
-    height: '100%',
-    borderRadius: 'inherit',
-    objectFiv: 'cover',
-  },
-
-  '&::before': {
-    content: '',
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
-    zIndex: '-1',
-    borderRadius: 'inherit',
-    margin: '-1px',
-    background: '$gradient-vertical',
-  },
-})
-
-export const AvatarFallback = styled(RadixAvatar.Fallback, {
-  width: '100%',
-  height: '100%',
-  borderRadius: 9999,
-
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
 })
 
 export const BlurTopLeft = styled('div', {

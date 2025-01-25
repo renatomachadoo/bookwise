@@ -4,8 +4,6 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 import {
-  Avatar,
-  AvatarFallback,
   BlurBottomLeft,
   BlurMiddle,
   BlurTopLeft,
@@ -19,9 +17,9 @@ import {
 
 import { Binoculars, ChartLineUp, SignIn, User } from '@phosphor-icons/react'
 
-import * as RadixAvatar from '@radix-ui/react-avatar'
-
 import bookWiseLogo from '@/assets/bookwise-logo.svg'
+import { Avatar } from '@/components/avatar'
+import { getNameInitials } from '@/utils/get-name-initials'
 
 export function NavigationMenu() {
   const { data, status } = useSession()
@@ -40,14 +38,7 @@ export function NavigationMenu() {
   }
 
   const pathname = router.pathname
-  const usernameInitials = data?.user?.name
-    ?.split(' ')
-    .reduce((accumulator, currentValue, index, array) => {
-      if (index === 0 || index === array.length - 1) {
-        return accumulator + currentValue[0].toUpperCase()
-      }
-      return accumulator
-    }, '')
+  const usernameInitials = data?.user?.name && getNameInitials(data.user.name)
 
   return (
     <NavigationMenuContainer>
@@ -85,13 +76,11 @@ export function NavigationMenu() {
 
       {isAuthenticated ? (
         <LogoutButton onClick={handleSignOut}>
-          <Avatar>
-            <RadixAvatar.Image
-              src={data?.user?.image || ''}
-              alt={data?.user?.name || ''}
-            />
-            <AvatarFallback delayMs={500}>{usernameInitials}</AvatarFallback>
-          </Avatar>
+          <Avatar
+            src={data?.user?.image || ''}
+            alt={data?.user?.name || ''}
+            fallbackText={usernameInitials || ''}
+          />
           {data?.user?.name} <SignIn />
         </LogoutButton>
       ) : (

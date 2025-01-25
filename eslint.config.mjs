@@ -10,11 +10,16 @@ const compat = new FlatCompat({
 })
 
 const eslintConfig = [
-  ...compat.extends(
-    'next/core-web-vitals',
-    'next/typescript',
-    '@rocketseat/eslint-config/react',
-  ),
+  ...compat.config({
+    extends: [
+      'next/core-web-vitals',
+      'next/typescript',
+      '@rocketseat/eslint-config/react',
+    ],
+    rules: {
+      camelcase: 'off',
+    },
+  }),
 ]
 
 export default eslintConfig

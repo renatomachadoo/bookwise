@@ -22,4 +22,27 @@ export const globalStyles = globalCss({
     color: '$gray100',
     '-webkit-font-smoothing': 'antialiased',
   },
+
+  // SCROLLBAR
+  /* width */
+  '::-webkit-scrollbar': {
+    width: 6,
+  },
+
+  /* Track */
+  '::-webkit-scrollbar-track': {
+    background: '$gray700',
+    borderRadius: 9999,
+  },
+
+  /* Handle */
+  '::-webkit-scrollbar-thumb': {
+    background: '$gray600',
+    borderRadius: 9999,
+  },
+
+  /* Handle on hover */
+  '::-webkit-scrollbar-thumb:hover': {
+    background: '$gray500',
+  },
 })

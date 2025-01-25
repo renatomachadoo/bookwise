@@ -14,7 +14,11 @@ export default async function handler(
     orderBy: {
       created_at: 'desc',
     },
+    include: {
+      user: true,
+      book: true,
+    },
   })
 
-  return res.json({ lastReviewedBooks })
+  return res.json(lastReviewedBooks)
 }
