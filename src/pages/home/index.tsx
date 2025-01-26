@@ -16,7 +16,8 @@ import { Action } from '@/components/action'
 import { useQuery } from '@tanstack/react-query'
 import { api } from '@/lib/axios'
 import { BookReviewCard } from '@/components/book-review-card'
-import { BookCard } from '@/components/book-card'
+import { BookCardSmall } from '@/components/book-card-small'
+import { useSession } from 'next-auth/react'
 
 type BookCardData = {
   id: string
@@ -49,7 +50,28 @@ interface RecentlyReviewedBookData {
   }
 }
 
+interface LastReadedBookData {
+  id: string
+  rate: number
+  description: string
+  created_at: string
+  book_id: string
+  user_id: string
+  book: {
+    id: string
+    name: string
+    author: string
+    summary: string
+    cover_url: string
+    total_pages: number
+    created_at: string
+  }
+}
+
 export default function Home() {
+  const session = useSession()
+  const isAuthenticated = session.status === 'authenticated'
+
   const { data: recentlyReviewedBooks } = useQuery<RecentlyReviewedBookData[]>({
     queryKey: ['recently-reviewed-books'],
     queryFn: async () => {
@@ -66,6 +88,15 @@ export default function Home() {
     },
   })
 
+  const { data: lastReadedBook } = useQuery<LastReadedBookData | undefined>({
+    queryKey: ['last-readed-book'],
+    queryFn: async () => {
+      const response = await api.get('/books/last-readed-book')
+      return response.data
+    },
+    enabled: isAuthenticated,
+  })
+
   return (
     <HomeContainer>
       <NavigationMenu />
@@ -75,42 +106,54 @@ export default function Home() {
         </header>
         <main>
           <MiddleDiv>
-            <SectionDivider text="Sua última leitura">
-              <Action
-                size="sm"
-                onClick={() => console.log('ola')}
-                text="Ver todas"
-                icon={CaretRight}
-              />
-            </SectionDivider>
-
-            <SectionDivider text="Avaliações mais recentes" />
-            <LastReviewedBooksSection>
-              {recentlyReviewedBooks?.map((recentlyReviewedBook) => {
-                return (
-                  <BookReviewCard
-                    key={recentlyReviewedBook.id}
-                    recentlyReviewedBook={recentlyReviewedBook}
+            <div>
+              {lastReadedBook && (
+                <SectionDivider text="Sua última leitura">
+                  <Action
+                    size="sm"
+                    onClick={() => console.log('ola')}
+                    text="Ver todas"
+                    icon={CaretRight}
                   />
-                )
-              })}
-            </LastReviewedBooksSection>
+                </SectionDivider>
+              )}
+            </div>
+            <div>
+              <SectionDivider text="Avaliações mais recentes" />
+              <LastReviewedBooksSection>
+                {recentlyReviewedBooks?.map((recentlyReviewedBook) => {
+                  return (
+                    <BookReviewCard
+                      key={recentlyReviewedBook.id}
+                      recentlyReviewedBook={recentlyReviewedBook}
+                    />
+                  )
+                })}
+              </LastReviewedBooksSection>
+            </div>
           </MiddleDiv>
 
           <Aside>
-            <SectionDivider text="Livros populares">
-              <Action
-                size="sm"
-                onClick={() => console.log('ola')}
-                text="Ver todos"
-                icon={CaretRight}
-              />
-            </SectionDivider>
-            <PopularBooksSection>
-              {popularBooks?.map((popularBook) => {
-                return <BookCard key={popularBook.id} bookData={popularBook} />
-              })}
-            </PopularBooksSection>
+            <div>
+              <SectionDivider text="Livros populares">
+                <Action
+                  size="sm"
+                  onClick={() => console.log('ola')}
+                  text="Ver todos"
+                  icon={CaretRight}
+                />
+              </SectionDivider>
+              <PopularBooksSection>
+                {popularBooks?.map((popularBook) => {
+                  return (
+                    <BookCardSmall
+                      key={popularBook.id}
+                      bookData={popularBook}
+                    />
+                  )
+                })}
+              </PopularBooksSection>
+            </div>
           </Aside>
         </main>
       </HomeContentContainer>

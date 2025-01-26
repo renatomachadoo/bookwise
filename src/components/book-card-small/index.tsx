@@ -17,7 +17,7 @@ interface BookCardProps {
   bookData: BookCardData
 }
 
-export function BookCard({
+export function BookCardSmall({
   bookData: { name, author, avgRating, cover_url },
 }: BookCardProps) {
   const bookImageUrl = cover_url.replace('public', '')

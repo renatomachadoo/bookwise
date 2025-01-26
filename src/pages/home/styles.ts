@@ -43,6 +43,16 @@ export const HomeContentContainer = styled('div', {
 export const MiddleDiv = styled('div', {
   paddingTop: '$2',
   paddingRight: '$2',
+
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '$10',
+
+  '> div': {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '$4',
+  },
 })
 
 export const LastReviewedBooksSection = styled('section', {
@@ -54,6 +64,16 @@ export const LastReviewedBooksSection = styled('section', {
 export const Aside = styled('div', {
   paddingTop: '$2',
   paddingRight: '$2',
+
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '$10',
+
+  '> div': {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '$4',
+  },
 })
 
 export const PopularBooksSection = styled('section', {

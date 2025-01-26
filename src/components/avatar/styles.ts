@@ -16,7 +16,7 @@ export const AvatarContainer = styled(RadixAvatar.Root, {
   },
 
   '&::before': {
-    content: '.',
+    content: '',
     position: 'absolute',
     top: 0,
     right: 0,
