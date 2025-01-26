@@ -18,6 +18,7 @@ import { api } from '@/lib/axios'
 import { BookReviewCard } from '@/components/book-review-card'
 import { BookCardSmall } from '@/components/book-card-small'
 import { useSession } from 'next-auth/react'
+import { LastReadedBookCard } from '@/components/last-readed-book-card'
 
 type BookCardData = {
   id: string
@@ -116,6 +117,7 @@ export default function Home() {
                     icon={CaretRight}
                   />
                 </SectionDivider>
+                <LastReadedBookCard bookData={lastReadedBook} />
               </div>
             )}
             <div>
