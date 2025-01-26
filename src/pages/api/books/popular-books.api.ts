@@ -6,7 +6,7 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   if (req.method !== 'GET') {
-    return res.status(205).end
+    return res.status(205).end()
   }
 
   const booksWithRatings = await prisma.rating.groupBy({
