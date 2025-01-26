@@ -36,17 +36,17 @@ interface BookReviewCardProps {
 }
 
 export function BookReviewCard({
-  recentlyReviewedBook: { rate, created_at, user, book },
+  recentlyReviewedBook: { rate, description, created_at, user, book },
 }: BookReviewCardProps) {
   const [viewMore, setViewMore] = useState(false)
   const maxLength = 230
   const usernameInitials = getNameInitials(user.name)
   const bookImage = book.cover_url.replace('public', '')
-  const bookSummaryLength = book.summary.length
-  const bookSummaryExceedLength = bookSummaryLength > maxLength
-  const bookSummary = viewMore
-    ? book.summary.substring(0, 999)
-    : book.summary.substring(0, maxLength)
+  const descriptionOfBookLength = description.length
+  const descriptionOfBookExceedLength = descriptionOfBookLength > maxLength
+  const bookDescription = viewMore
+    ? description.substring(0, 999)
+    : description.substring(0, maxLength)
 
   function handleViewMore() {
     setViewMore(true)
@@ -86,8 +86,8 @@ export function BookReviewCard({
             <small>{book.author}</small>
           </header>
           <p>
-            {bookSummary}
-            {bookSummaryExceedLength && !viewMore && (
+            {bookDescription}
+            {descriptionOfBookExceedLength && !viewMore && (
               <>
                 <span>... </span>
                 <ViewMoreButton onClick={handleViewMore}>
