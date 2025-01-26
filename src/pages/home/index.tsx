@@ -106,8 +106,8 @@ export default function Home() {
         </header>
         <main>
           <MiddleDiv>
-            <div>
-              {lastReadedBook && (
+            {lastReadedBook && (
+              <div>
                 <SectionDivider text="Sua última leitura">
                   <Action
                     size="sm"
@@ -116,8 +116,8 @@ export default function Home() {
                     icon={CaretRight}
                   />
                 </SectionDivider>
-              )}
-            </div>
+              </div>
+            )}
             <div>
               <SectionDivider text="Avaliações mais recentes" />
               <LastReviewedBooksSection>
