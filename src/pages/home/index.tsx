@@ -1,5 +1,6 @@
 import { NavigationMenu } from '@/components/navigation-menu'
 import {
+  Aside,
   HomeContainer,
   HomeContentContainer,
   LastReviewedBooksSection,
@@ -75,7 +76,16 @@ export default function Home() {
                 })}
             </LastReviewedBooksSection>
           </MiddleDiv>
-          <div>2</div>
+          <Aside>
+            <SectionDivider text="Livros populares">
+              <Action
+                size="sm"
+                onClick={() => console.log('ola')}
+                text="Ver todos"
+                icon={CaretRight}
+              />
+            </SectionDivider>
+          </Aside>
         </main>
       </HomeContentContainer>
     </HomeContainer>

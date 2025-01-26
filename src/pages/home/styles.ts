@@ -50,3 +50,8 @@ export const LastReviewedBooksSection = styled('section', {
   flexDirection: 'column',
   gap: '$3',
 })
+
+export const Aside = styled('div', {
+  paddingTop: '$2',
+  paddingRight: '$2',
+})
