@@ -5,6 +5,7 @@ import {
   HomeContentContainer,
   LastReviewedBooksSection,
   MiddleDiv,
+  PopularBooksSection,
 } from './styles'
 import { PageTitle } from '@/components/page-title'
 
@@ -15,6 +16,18 @@ import { Action } from '@/components/action'
 import { useQuery } from '@tanstack/react-query'
 import { api } from '@/lib/axios'
 import { BookReviewCard } from '@/components/book-review-card'
+import { BookCard } from '@/components/book-card'
+
+type BookCardData = {
+  id: string
+  name: string
+  author: string
+  summary: string
+  cover_url: string
+  total_pages: number
+  created_at: string
+  avgRating: number
+}
 
 interface RecentlyReviewedBookData {
   id: string
@@ -45,6 +58,14 @@ export default function Home() {
     },
   })
 
+  const { data: popularBooks } = useQuery<BookCardData[]>({
+    queryKey: ['popular-books'],
+    queryFn: async () => {
+      const response = await api.get('/books/popular-books')
+      return response.data
+    },
+  })
+
   return (
     <HomeContainer>
       <NavigationMenu />
@@ -65,17 +86,17 @@ export default function Home() {
 
             <SectionDivider text="Avaliações mais recentes" />
             <LastReviewedBooksSection>
-              {recentlyReviewedBooks &&
-                recentlyReviewedBooks.map((recentlyReviewedBook) => {
-                  return (
-                    <BookReviewCard
-                      key={recentlyReviewedBook.id}
-                      recentlyReviewedBook={recentlyReviewedBook}
-                    />
-                  )
-                })}
+              {recentlyReviewedBooks?.map((recentlyReviewedBook) => {
+                return (
+                  <BookReviewCard
+                    key={recentlyReviewedBook.id}
+                    recentlyReviewedBook={recentlyReviewedBook}
+                  />
+                )
+              })}
             </LastReviewedBooksSection>
           </MiddleDiv>
+
           <Aside>
             <SectionDivider text="Livros populares">
               <Action
@@ -85,6 +106,11 @@ export default function Home() {
                 icon={CaretRight}
               />
             </SectionDivider>
+            <PopularBooksSection>
+              {popularBooks?.map((popularBook) => {
+                return <BookCard key={popularBook.id} bookData={popularBook} />
+              })}
+            </PopularBooksSection>
           </Aside>
         </main>
       </HomeContentContainer>

@@ -55,3 +55,9 @@ export const Aside = styled('div', {
   paddingTop: '$2',
   paddingRight: '$2',
 })
+
+export const PopularBooksSection = styled('section', {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '$3',
+})
