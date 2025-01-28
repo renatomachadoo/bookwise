@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import { BookCardContainer, RatingContainer } from './styles'
 import { Star } from '@phosphor-icons/react'
+import { intlFormatDistance } from 'date-fns'
 
 type LastReadedBookData = {
   id: string
@@ -42,7 +43,9 @@ export function LastReadedBookCard({
       <div>
         <header>
           <div>
-            <span>{created_at}</span>
+            <span>
+              {intlFormatDistance(created_at, new Date(), { locale: 'pt' })}
+            </span>
             <RatingContainer>
               {Array.from({ length: 5 }).map((_, i) => {
                 if (i + 1 <= rate) {

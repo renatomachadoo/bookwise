@@ -28,11 +28,11 @@ export const BookCardContainer = styled('div', {
         display: 'flex',
         justifyContent: 'space-between',
         marginBottom: '$3',
-
         span: {
           color: '$gray300',
           fontSize: '$sm',
           fontWeight: '$regular',
+          textTransform: 'capitalize',
         },
       },
 
