@@ -1,18 +1,29 @@
 import { NavigationMenu } from '@/components/navigation-menu'
-import { HomeContainer, HomeContentContainer } from './styles'
+import {
+  BookCategory,
+  ExploreContainer,
+  ExploreContentContainer,
+  MainHeader,
+} from './styles'
 import { PageTitle } from '@/components/page-title'
 
 import { Binoculars } from '@phosphor-icons/react'
 
 export default function Explore() {
   return (
-    <HomeContainer>
+    <ExploreContainer>
       <NavigationMenu />
-      <HomeContentContainer>
+      <ExploreContentContainer>
         <header>
           <PageTitle icon={Binoculars} title="Explorar" />
         </header>
-      </HomeContentContainer>
-    </HomeContainer>
+        <main>
+          <MainHeader>
+            <BookCategory active>Tudo</BookCategory>
+            <BookCategory>asd</BookCategory>
+          </MainHeader>
+        </main>
+      </ExploreContentContainer>
+    </ExploreContainer>
   )
 }
