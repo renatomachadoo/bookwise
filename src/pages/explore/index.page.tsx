@@ -5,14 +5,25 @@ import {
   ExploreContainer,
   ExploreContentContainer,
   MainHeader,
+  SearchForm,
 } from './styles'
 import { PageTitle } from '@/components/page-title'
 
-import { Binoculars } from '@phosphor-icons/react'
+import { Binoculars, MagnifyingGlass } from '@phosphor-icons/react'
 import { api } from '@/lib/axios'
 import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
 import { BookCardSmall } from '@/components/book-card-small'
+import { z } from 'zod'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { TextInput } from '@/components/text-input'
+
+const searchFormSchema = z.object({
+  search: z.string(),
+})
+
+type SearchFormData = z.infer<typeof searchFormSchema>
 
 interface CategoriesData {
   id: string
@@ -31,10 +42,14 @@ interface BooksData {
 }
 
 export default function Explore() {
+  const { register, handleSubmit } = useForm<SearchFormData>({
+    resolver: zodResolver(searchFormSchema),
+  })
+
   const router = useRouter()
 
   const selectedCategory = router.query.category
-  const search = ''
+  const search = router.query.search
 
   const { data: booksCategories } = useQuery<CategoriesData[]>({
     queryKey: ['books-categories'],
@@ -44,8 +59,8 @@ export default function Explore() {
     },
   })
 
-  const { data: books } = useQuery<BooksData[]>({
-    queryKey: ['books', selectedCategory],
+  const { data: books, isPending: isPendingBooksData } = useQuery<BooksData[]>({
+    queryKey: ['books', selectedCategory, search],
     queryFn: async () => {
       const response = await api.get('/books', {
         params: {
@@ -58,21 +73,19 @@ export default function Explore() {
   })
 
   function handleSelectBookCategory(category: string) {
-    if (category) {
-      return router.replace({
-        pathname: router.pathname,
-        query: { ...router.query, category },
-      })
-    }
+    return router.replace({
+      pathname: router.pathname,
+      query: { ...router.query, category },
+    })
+  }
 
-    const { category: categoryQueryParam, ...otherQueryParams } = router.query
+  function handleSubmitSearchForm(data: SearchFormData) {
+    const { search } = data
 
-    if (categoryQueryParam) {
-      router.replace({
-        pathname: router.pathname,
-        query: otherQueryParams,
-      })
-    }
+    router.replace({
+      pathname: router.pathname,
+      query: { ...router.query, search },
+    })
   }
 
   return (
@@ -81,12 +94,21 @@ export default function Explore() {
       <ExploreContentContainer>
         <header>
           <PageTitle icon={Binoculars} title="Explorar" />
+          <SearchForm onSubmit={handleSubmit(handleSubmitSearchForm)}>
+            <TextInput
+              placeholder="Buscar livro ou autor"
+              icon={MagnifyingGlass}
+              {...register('search')}
+              disabled={isPendingBooksData}
+            />
+          </SearchForm>
         </header>
         <main>
           <MainHeader>
             <BookCategory
               onClick={() => handleSelectBookCategory('')}
               active={!selectedCategory}
+              disabled={isPendingBooksData}
             >
               Tudo
             </BookCategory>
@@ -96,6 +118,7 @@ export default function Explore() {
                   key={category.id}
                   onClick={() => handleSelectBookCategory(category.name)}
                   active={selectedCategory === category.name}
+                  disabled={isPendingBooksData}
                 >
                   {category.name}
                 </BookCategory>

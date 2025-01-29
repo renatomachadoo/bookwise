@@ -17,6 +17,8 @@ export const ExploreContentContainer = styled('div', {
   gap: '$10',
 
   '> header': {
+    display: 'flex',
+    justifyContent: 'space-between',
     marginTop: '3.25rem',
     marginBottom: '$10',
   },
@@ -48,7 +50,8 @@ export const BookCategory = styled('button', {
   cursor: 'pointer',
 
   '&:hover:not(:disabled)': {
-    border: '1px solid $gray100',
+    background: '$purple200',
+    border: '1px solid $purple100',
     color: '$gray100',
   },
 
@@ -89,4 +92,8 @@ export const BooksContainer = styled('div', {
   paddingRight: '$2',
 
   overflow: 'auto',
+})
+
+export const SearchForm = styled('form', {
+  width: 433,
 })
