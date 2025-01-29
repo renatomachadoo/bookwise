@@ -31,9 +31,11 @@ export const ExploreContentContainer = styled('div', {
 
 export const MainHeader = styled('header', {
   display: 'flex',
+  flexWrap: 'wrap',
   gap: '$3',
   paddingTop: '$2',
   paddingRight: '$2',
+  marginBottom: '3rem',
 })
 
 export const BookCategory = styled('button', {
