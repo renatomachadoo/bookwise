@@ -1,6 +1,7 @@
 import { styled } from '@/styles'
 
 export const BookCardContainer = styled('div', {
+  position: 'relative',
   width: '100%',
   padding: '1.125rem $5',
   borderRadius: 8,
@@ -47,4 +48,24 @@ export const RatingContainer = styled('div', {
     height: 16,
     color: '$purple100',
   },
+})
+
+export const AlreadyReaded = styled('div', {
+  position: 'absolute',
+  right: 0,
+  top: 0,
+
+  padding: '$1 $3',
+
+  borderTopRightRadius: 8,
+  borderBottomLeftRadius: 4,
+
+  background: '$green300',
+
+  fontSize: '$xs',
+  fontWeight: '$bold',
+  lineHeigh: '130%',
+  color: '$green100',
+
+  textTransform: 'uppercase',
 })
