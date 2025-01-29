@@ -18,6 +18,14 @@ export const TextInputContainer = styled('label', {
     height: 20,
     width: 20,
   },
+
+  '&:focus-within': {
+    border: '1px solid $green200',
+
+    svg: {
+      color: '$green200',
+    },
+  },
 })
 
 export const Input = styled('input', {
@@ -27,7 +35,9 @@ export const Input = styled('input', {
   width: '100%',
 
   fontSize: '$sm',
-  color: '$gray100',
+  color: '$gray200',
+
+  caretColor: '$green100',
 
   '&:focus': {
     boxShadow: 'none',
