@@ -12,23 +12,20 @@ export default async function handler(
   const category = String(req.query.category || '')
   const search = String(req.query.search || '')
 
-  const books = await prisma.categoriesOnBooks.findMany({
-    include: {
-      book: true,
-    },
+  const books = await prisma.book.findMany({
     where: {
-      book: {
-        name: {
-          contains: search,
-        },
+      name: {
+        contains: search,
       },
-      ...(category ? { category: { name: category } } : {}),
+      ...(category
+        ? {
+            categories: {
+              some: { category: { name: category } },
+            },
+          }
+        : {}),
     },
   })
 
-  const booksToReturn = books.map((book) => {
-    return book.book
-  })
-
-  return res.json({ books: booksToReturn })
+  return res.json(books)
 }
