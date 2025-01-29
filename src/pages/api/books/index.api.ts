@@ -14,9 +14,18 @@ export default async function handler(
 
   const books = await prisma.book.findMany({
     where: {
-      name: {
-        contains: search,
-      },
+      OR: [
+        {
+          name: {
+            contains: search,
+          },
+        },
+        {
+          author: {
+            contains: search,
+          },
+        },
+      ],
       ...(category
         ? {
             categories: {
