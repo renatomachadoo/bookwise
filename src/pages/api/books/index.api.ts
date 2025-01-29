@@ -1,5 +1,17 @@
 import { prisma } from '@/lib/prisma'
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '../auth/[...nextauth].api'
+
+type User = {
+  id: string
+  name: string
+  email: string
+  emailVerified: string
+  image: string
+  created_at: string
+  updated_at: string
+}
 
 export default async function handler(
   req: NextApiRequest,
@@ -12,7 +24,7 @@ export default async function handler(
   const category = String(req.query.category || '')
   const search = String(req.query.search || '')
 
-  const books = await prisma.book.findMany({
+  const booksSelected = await prisma.book.findMany({
     where: {
       OR: [
         {
@@ -43,7 +55,7 @@ export default async function handler(
     },
   })
 
-  const booksWithAvgRating = books.map((book) => {
+  const booksWithAvgRating = booksSelected.map((book) => {
     const avgRating =
       book.ratings.length > 0
         ? book.ratings.reduce((sum, rating) => sum + rating.rate, 0) /
@@ -62,5 +74,31 @@ export default async function handler(
     }
   })
 
-  return res.json(booksWithAvgRating)
+  const session = await getServerSession(req, res, authOptions)
+
+  let books = booksWithAvgRating
+
+  if (session) {
+    const user = <User>session.user
+    const userReviews = await prisma.rating.groupBy({
+      by: 'book_id',
+      where: {
+        user_id: user.id,
+      },
+    })
+
+    books = books.map((book) => {
+      if (userReviews.some((review) => review.book_id === book.id)) {
+        return {
+          ...book,
+          readed: true,
+        }
+      }
+      return book
+    })
+
+    return res.json(books)
+  }
+
+  return res.json(books)
 }
