@@ -1,6 +1,7 @@
 import { NavigationMenu } from '@/components/navigation-menu'
 import {
   BookCategory,
+  BooksContainer,
   ExploreContainer,
   ExploreContentContainer,
   MainHeader,
@@ -11,19 +12,47 @@ import { Binoculars } from '@phosphor-icons/react'
 import { api } from '@/lib/axios'
 import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
+import { BookCardSmall } from '@/components/book-card-small'
 
 interface CategoriesData {
   id: string
   name: string
 }
 
+interface BooksData {
+  id: string
+  name: string
+  author: string
+  summary: string
+  cover_url: string
+  total_pages: number
+  created_at: string
+  avgRating: number
+}
+
 export default function Explore() {
   const router = useRouter()
+
+  const selectedCategory = router.query.category
+  const search = ''
 
   const { data: booksCategories } = useQuery<CategoriesData[]>({
     queryKey: ['books-categories'],
     queryFn: async () => {
       const response = await api.get('/books/categories')
+      return response.data
+    },
+  })
+
+  const { data: books } = useQuery<BooksData[]>({
+    queryKey: ['books', selectedCategory],
+    queryFn: async () => {
+      const response = await api.get('/books', {
+        params: {
+          category: selectedCategory,
+          search,
+        },
+      })
       return response.data
     },
   })
@@ -45,8 +74,6 @@ export default function Explore() {
       })
     }
   }
-
-  const selectedCategory = router.query.category
 
   return (
     <ExploreContainer>
@@ -75,6 +102,13 @@ export default function Explore() {
               )
             })}
           </MainHeader>
+          <BooksContainer>
+            {books?.map((book) => {
+              return (
+                <BookCardSmall key={book.id} bookData={book} imageSize="md" />
+              )
+            })}
+          </BooksContainer>
         </main>
       </ExploreContentContainer>
     </ExploreContainer>

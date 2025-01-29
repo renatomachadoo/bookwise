@@ -24,8 +24,8 @@ export const ExploreContentContainer = styled('div', {
   main: {
     width: '100%',
     height: '100%',
-
-    // background: 'red',
+    display: 'flex',
+    flexDirection: 'column',
   },
 })
 
@@ -47,6 +47,15 @@ export const BookCategory = styled('button', {
   border: '1px solid $purple100',
   cursor: 'pointer',
 
+  '&:hover:not(:disabled)': {
+    border: '1px solid $gray100',
+    color: '$gray100',
+  },
+
+  '&:disabled': {
+    cursor: 'not-allowed',
+  },
+
   variants: {
     active: {
       true: {
@@ -65,4 +74,19 @@ export const BookCategory = styled('button', {
   defaultVariants: {
     active: false,
   },
+})
+
+export const BooksContainer = styled('div', {
+  flexGrow: 1,
+  height: 1,
+  width: '100%',
+
+  display: 'grid',
+  gridTemplateColumns: 'repeat(3, 1fr)',
+  gridAutoRows: '184px',
+  gap: '$5',
+
+  paddingRight: '$2',
+
+  overflow: 'auto',
 })

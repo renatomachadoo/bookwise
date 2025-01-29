@@ -15,16 +15,23 @@ type BookCardData = {
 
 interface BookCardProps {
   bookData: BookCardData
+  imageSize?: 'sm' | 'md'
 }
 
 export function BookCardSmall({
   bookData: { name, author, avgRating, cover_url },
+  imageSize = 'sm',
 }: BookCardProps) {
   const bookImageUrl = cover_url.replace('public', '')
 
   return (
     <BookCardContainer>
-      <Image width={64} height={94} src={bookImageUrl} alt={name} />
+      {imageSize === 'sm' && (
+        <Image width={64} height={94} src={bookImageUrl} alt={name} />
+      )}
+      {imageSize === 'md' && (
+        <Image width={108} height={152} src={bookImageUrl} alt={name} />
+      )}
       <div>
         <header>
           <span>{name}</span>

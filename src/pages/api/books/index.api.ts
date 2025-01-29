@@ -25,7 +25,33 @@ export default async function handler(
           }
         : {}),
     },
+    include: {
+      ratings: {
+        select: {
+          rate: true,
+        },
+      },
+    },
   })
 
-  return res.json(books)
+  const booksWithAvgRating = books.map((book) => {
+    const avgRating =
+      book.ratings.length > 0
+        ? book.ratings.reduce((sum, rating) => sum + rating.rate, 0) /
+          book.ratings.length
+        : 0
+
+    return {
+      id: book.id,
+      name: book.name,
+      author: book.author,
+      summary: book.summary,
+      cover_url: book.cover_url,
+      total_pages: book.total_pages,
+      created_at: book.created_at,
+      avgRating,
+    }
+  })
+
+  return res.json(booksWithAvgRating)
 }
