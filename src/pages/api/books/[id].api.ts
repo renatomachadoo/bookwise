@@ -17,6 +17,9 @@ export default async function handler(
     },
     include: {
       ratings: {
+        orderBy: {
+          created_at: 'desc',
+        },
         include: {
           user: true,
         },
@@ -59,5 +62,5 @@ export default async function handler(
     avgRating,
   }
 
-  return res.json({ bookToReturn })
+  return res.json(bookToReturn)
 }

@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import { AlreadyReaded, BookCardContainer, RatingContainer } from './styles'
 import { Star } from '@phosphor-icons/react'
+import { ComponentProps } from 'react'
 
 type BookCardData = {
   id: string
@@ -14,7 +15,7 @@ type BookCardData = {
   readed?: boolean
 }
 
-interface BookCardProps {
+interface BookCardProps extends ComponentProps<typeof BookCardContainer> {
   bookData: BookCardData
   imageSize?: 'sm' | 'md'
 }
@@ -22,11 +23,12 @@ interface BookCardProps {
 export function BookCardSmall({
   bookData: { name, author, avgRating, cover_url, readed = false },
   imageSize = 'sm',
+  ...rest
 }: BookCardProps) {
   const bookImageUrl = cover_url.replace('public', '')
 
   return (
-    <BookCardContainer>
+    <BookCardContainer {...rest}>
       {imageSize === 'sm' && (
         <Image width={64} height={94} src={bookImageUrl} alt={name} />
       )}

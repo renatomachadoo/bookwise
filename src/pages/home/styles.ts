@@ -20,12 +20,12 @@ export const HomeContentContainer = styled('div', {
   gap: '$10',
 
   '> header': {
+    padding: '$2',
     marginTop: '3.25rem',
     marginBottom: '$10',
   },
 
   main: {
-    // borderRadius: 8,
     flexGrow: 1,
     height: 1,
     width: '100%',
@@ -41,8 +41,7 @@ export const HomeContentContainer = styled('div', {
 })
 
 export const MiddleDiv = styled('div', {
-  paddingTop: '$2',
-  paddingRight: '$2',
+  padding: '$2 $2 0 $2',
 
   display: 'flex',
   flexDirection: 'column',
@@ -62,9 +61,7 @@ export const LastReviewedBooksSection = styled('section', {
 })
 
 export const Aside = styled('div', {
-  paddingTop: '$2',
-  paddingRight: '$2',
-
+  padding: '$2 $2 0 $2',
   display: 'flex',
   flexDirection: 'column',
   gap: '$10',

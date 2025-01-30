@@ -1,4 +1,5 @@
 import { styled } from '@/styles'
+import 'react-modern-drawer/dist/index.css'
 
 export const ExploreContainer = styled('div', {
   width: '100%',
@@ -7,6 +8,7 @@ export const ExploreContainer = styled('div', {
   display: 'grid',
   gridTemplateColumns: '232px auto',
   gap: '6rem',
+  position: 'relative',
 })
 
 export const ExploreContentContainer = styled('div', {
@@ -17,6 +19,7 @@ export const ExploreContentContainer = styled('div', {
   gap: '$10',
 
   '> header': {
+    padding: '$2',
     display: 'flex',
     justifyContent: 'space-between',
     marginTop: '3.25rem',
@@ -35,8 +38,7 @@ export const MainHeader = styled('header', {
   display: 'flex',
   flexWrap: 'wrap',
   gap: '$3',
-  paddingTop: '$2',
-  paddingRight: '$2',
+  padding: '$2',
   marginBottom: '3rem',
 })
 
@@ -89,11 +91,147 @@ export const BooksContainer = styled('div', {
   gridAutoRows: '184px',
   gap: '$5',
 
-  paddingRight: '$2',
+  padding: '$2',
 
   overflow: 'auto',
 })
 
 export const SearchForm = styled('form', {
   width: 433,
+})
+
+export const DrawerContainer = styled('div', {
+  background: '$gray800',
+  width: '100%',
+  height: '100%',
+
+  display: 'flex',
+  flexDirection: 'column',
+
+  padding: '$6 3rem',
+})
+
+export const DrawerCloseButton = styled('button', {
+  border: 0,
+  background: 'transparent',
+
+  width: 24,
+  height: 24,
+
+  cursor: 'pointer',
+
+  marginLeft: 'auto',
+  marginBottom: '$4',
+
+  outline: 'none',
+
+  svg: {
+    width: '100%',
+    height: '100%',
+    color: '$gray400',
+  },
+
+  '&:hover': {
+    svg: {
+      color: '$gray200',
+    },
+  },
+})
+
+export const DrawerBookInfo = styled('div', {
+  background: '$gray700',
+  padding: '$6 $8 $4',
+  borderRadius: 10,
+  display: 'flex',
+  flexDirection: 'column',
+})
+
+export const DrawerBookTop = styled('div', {
+  display: 'flex',
+  gap: '$8',
+
+  '> img': {
+    borderRadius: 10,
+    objectFit: 'cover',
+  },
+
+  '> div': {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+
+    header: {
+      h3: {
+        color: '$gray100',
+        fontSize: '$lg',
+        lineHeight: '$short',
+        fontWeight: '$bold',
+      },
+      span: {
+        color: '$gray300',
+      },
+    },
+
+    '> div': {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '$1',
+
+      span: {
+        svg: {
+          width: 20,
+          height: 20,
+        },
+
+        display: 'flex',
+        gap: '$1',
+        color: '$purple100',
+      },
+
+      small: {
+        fontSize: '$sm',
+        color: '$gray400',
+      },
+    },
+  },
+})
+
+export const DrawerBookBottom = styled('div', {
+  width: '100%',
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: '3.5rem',
+  padding: '$6 0',
+
+  marginTop: '$10',
+
+  borderTop: '1px solid $gray600',
+
+  '> div': {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '$4',
+
+    svg: {
+      width: 24,
+      height: 24,
+      color: '$green100',
+    },
+
+    div: {
+      display: 'flex',
+      flexDirection: 'column',
+
+      small: {
+        fontSize: '$sm',
+        color: '$gray300',
+      },
+
+      span: {
+        lineHeight: '$short',
+        fontWeight: '$bold',
+        color: '$gray200',
+      },
+    },
+  },
 })

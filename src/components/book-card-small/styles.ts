@@ -1,15 +1,24 @@
 import { styled } from '@/styles'
 
-export const BookCardContainer = styled('div', {
+export const BookCardContainer = styled('button', {
+  border: 0,
+  outline: 'none',
+
   position: 'relative',
   width: '100%',
   padding: '1.125rem $5',
   borderRadius: 8,
+  textAlign: 'start',
 
   background: '$gray700',
 
   display: 'flex',
   gap: '$5',
+
+  '&:hover': {
+    cursor: 'pointer',
+    outline: '2px solid $gray600',
+  },
 
   img: {
     objectFit: 'cover',
@@ -17,6 +26,9 @@ export const BookCardContainer = styled('div', {
   },
 
   '> div': {
+    height: '100%',
+    width: '100%',
+
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',

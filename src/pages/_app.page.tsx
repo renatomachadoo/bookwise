@@ -5,6 +5,7 @@ import { Nunito } from 'next/font/google'
 import { SessionProvider } from 'next-auth/react'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClient } from '@/lib/react-query'
+import { SkeletonTheme } from 'react-loading-skeleton'
 
 const nunito = Nunito({
   weight: ['400', '700'],
@@ -20,9 +21,11 @@ export default function App({
   return (
     <QueryClientProvider client={queryClient}>
       <SessionProvider session={session}>
-        <main className={nunito.className}>
-          <Component {...pageProps} />
-        </main>
+        <SkeletonTheme baseColor="#202020" highlightColor="#444">
+          <main className={nunito.className}>
+            <Component {...pageProps} />
+          </main>
+        </SkeletonTheme>
       </SessionProvider>
     </QueryClientProvider>
   )
