@@ -109,6 +109,7 @@ export const DrawerContainer = styled('div', {
   flexDirection: 'column',
 
   padding: '$6 3rem',
+  overflow: 'auto',
 })
 
 export const DrawerCloseButton = styled('button', {
@@ -233,5 +234,84 @@ export const DrawerBookBottom = styled('div', {
         color: '$gray200',
       },
     },
+  },
+})
+
+export const DrawerBookReviewsContainer = styled('div', {
+  marginTop: '$10',
+
+  '> header': {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: '$4',
+
+    h3: {
+      color: '$gray200',
+      fontSize: '$sm',
+      fontWeight: '$regular',
+    },
+  },
+})
+
+export const DrawerBookReviews = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '$3',
+})
+
+export const DrawerBookReview = styled('div', {
+  background: '$gray700',
+  padding: '$6',
+  borderRadius: 8,
+
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '$5',
+
+  header: {
+    width: '100%',
+    display: 'flex',
+    gap: '$4',
+
+    '> div': {
+      width: '100%',
+      display: 'flex',
+      justifyContent: 'space-between',
+
+      '> div': {
+        display: 'flex',
+        flexDirection: 'column',
+
+        span: {
+          color: '$gray100',
+          lineHeight: '$short',
+          fontWeight: '$bold',
+        },
+
+        small: {
+          fontSize: '$sm',
+          color: '$gray400',
+          textTransform: 'capitalize',
+        },
+      },
+
+      '> span': {
+        display: 'flex',
+        gap: '$1',
+        svg: {
+          width: 16,
+          height: 16,
+          color: '$purple100',
+        },
+      },
+    },
+  },
+
+  p: {
+    marginTop: '$5',
+    color: '$gray300',
+    fontSize: '$sm',
+    lineHeight: '$base',
   },
 })

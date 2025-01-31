@@ -4,6 +4,9 @@ import {
   BooksContainer,
   DrawerBookBottom,
   DrawerBookInfo,
+  DrawerBookReview,
+  DrawerBookReviews,
+  DrawerBookReviewsContainer,
   DrawerBookTop,
   DrawerCloseButton,
   DrawerContainer,
@@ -34,6 +37,10 @@ import { TextInput } from '@/components/text-input'
 import Drawer from 'react-modern-drawer'
 import Image from 'next/image'
 import { Skeleton } from '@/components/skeleton'
+import { Action } from '@/components/action'
+import { useSession } from 'next-auth/react'
+import { Avatar } from '@/components/avatar'
+import { intlFormatDistance } from 'date-fns'
 
 const searchFormSchema = z.object({
   search: z.string(),
@@ -88,7 +95,10 @@ interface BookData {
 }
 
 export default function Explore() {
+  const { status } = useSession()
   const router = useRouter()
+
+  const isAuthenticated = status === 'authenticated'
 
   const { register, handleSubmit } = useForm<SearchFormData>({
     resolver: zodResolver(searchFormSchema),
@@ -221,103 +231,149 @@ export default function Explore() {
             <X />
           </DrawerCloseButton>
           <DrawerBookInfo>
-            {bookImageUrl && book ? (
-              <>
-                <DrawerBookTop>
-                  <Image
-                    src={bookImageUrl}
-                    width={171.65}
-                    height={242}
-                    alt={book?.name}
-                  />
-                  <div>
-                    <header>
+            <DrawerBookTop>
+              {bookImageUrl && book ? (
+                <Image
+                  src={bookImageUrl}
+                  width={171.65}
+                  height={242}
+                  alt={book?.name}
+                />
+              ) : (
+                <Skeleton
+                  width={171.65}
+                  height={242}
+                  style={{ borderRadius: 10 }}
+                />
+              )}
+              <div>
+                <header>
+                  {book ? (
+                    <>
                       <h3>{book.name}</h3>
                       <span>{book.author}</span>
-                    </header>
-                    <div>
-                      <span>
-                        {Array.from({ length: 5 }).map((_, i) => {
-                          if (i + 1 <= book.avgRating) {
-                            return <Star key={i} weight="fill" />
-                          }
-                          return <Star key={i} />
-                        })}
-                      </span>
-                      <small>
-                        {book.ratingsAmount}{' '}
-                        {book.ratingsAmount === 1 ? 'avaliação' : 'avaliações'}
-                      </small>
-                    </div>
-                  </div>
-                </DrawerBookTop>
-                <DrawerBookBottom>
-                  <div>
-                    <BookmarkSimple />
-                    <div>
-                      <small>Categoria</small>
-                      <span>{String(book.categories).replace(',', ', ')}</span>
-                    </div>
-                  </div>
-                  <div>
-                    <BookOpen />
-                    <div>
-                      <small>Páginas</small>
-                      <span>{book.total_pages}</span>
-                    </div>
-                  </div>
-                </DrawerBookBottom>
-              </>
-            ) : (
-              <>
-                <DrawerBookTop>
-                  <Skeleton
-                    width={171.65}
-                    height={242}
-                    style={{ borderRadius: 10 }}
-                  />
-                  <div>
-                    <header>
+                    </>
+                  ) : (
+                    <>
                       <Skeleton width={200} height={20} />
                       <Skeleton width={180} height={15} />
-                    </header>
-                    <div>
-                      <span>
+                    </>
+                  )}
+                </header>
+                <div>
+                  <span>
+                    {book ? (
+                      Array.from({ length: 5 }).map((_, i) => {
+                        if (i + 1 <= book.avgRating) {
+                          return <Star key={i} weight="fill" />
+                        }
+                        return <Star key={i} />
+                      })
+                    ) : (
+                      <>
+                        {' '}
                         <Skeleton width={20} height={20} />
                         <Skeleton width={20} height={20} />
                         <Skeleton width={20} height={20} />
                         <Skeleton width={20} height={20} />
                         <Skeleton width={20} height={20} />
-                      </span>
-                      <small>
-                        <Skeleton width={100} height={15} />
-                      </small>
-                    </div>
-                  </div>
-                </DrawerBookTop>
-                <DrawerBookBottom>
-                  <div>
-                    <BookmarkSimple />
-                    <div>
-                      <small>Categoria</small>
-                      <span>
-                        <Skeleton width={120} height={20} />
-                      </span>
-                    </div>
-                  </div>
-                  <div>
-                    <BookOpen />
-                    <div>
-                      <small>Páginas</small>
-                      <span>
-                        <Skeleton width={50} height={20} />
-                      </span>
-                    </div>
-                  </div>
-                </DrawerBookBottom>
-              </>
-            )}
+                      </>
+                    )}
+                  </span>
+                  <small>
+                    {book ? (
+                      <>
+                        {book.ratingsAmount}{' '}
+                        {book.ratingsAmount === 1 ? 'avaliação' : 'avaliações'}
+                      </>
+                    ) : (
+                      <Skeleton width={100} height={15} />
+                    )}
+                  </small>
+                </div>
+              </div>
+            </DrawerBookTop>
+            <DrawerBookBottom>
+              <div>
+                <BookmarkSimple />
+                <div>
+                  <small>Categoria</small>
+                  <span>
+                    {book ? (
+                      String(book.categories).replace(',', ', ')
+                    ) : (
+                      <Skeleton width={120} height={20} />
+                    )}
+                  </span>
+                </div>
+              </div>
+              <div>
+                <BookOpen />
+                <div>
+                  <small>Páginas</small>
+                  <span>
+                    {book ? (
+                      book.total_pages
+                    ) : (
+                      <Skeleton width={50} height={20} />
+                    )}
+                  </span>
+                </div>
+              </div>
+            </DrawerBookBottom>
           </DrawerBookInfo>
+
+          <DrawerBookReviewsContainer>
+            <header>
+              <h3>Avaliações</h3>
+              {/* {!isAuthenticated && ( */}
+              <Action onClick={() => console.log('avaliar')} text="Avaliar" />
+              {/* )} */}
+            </header>
+            <DrawerBookReviews>
+              {book ? (
+                book.ratings.map((rating) => {
+                  return (
+                    <DrawerBookReview key={rating.id}>
+                      <header>
+                        <Avatar
+                          src={rating.user.image}
+                          alt={rating.user.name}
+                          size="md"
+                        />
+                        <div>
+                          <div>
+                            <span>{rating.user.name}</span>
+                            <small>
+                              {intlFormatDistance(
+                                rating.created_at,
+                                new Date(),
+                                { locale: 'pt' },
+                              )}
+                            </small>
+                          </div>
+                          <span>
+                            {Array.from({ length: 5 }).map((_, i) => {
+                              if (i + 1 <= rating.rate) {
+                                return <Star key={i} weight="fill" />
+                              }
+                              return <Star key={i} />
+                            })}
+                          </span>
+                        </div>
+                      </header>
+                      <p>{rating.description}</p>
+                    </DrawerBookReview>
+                  )
+                })
+              ) : (
+                <>
+                  <Skeleton width="100%" height={180} />
+                  <Skeleton width="100%" height={180} />
+                </>
+              )}
+            </DrawerBookReviews>
+          </DrawerBookReviewsContainer>
         </DrawerContainer>
       </Drawer>
     </>
