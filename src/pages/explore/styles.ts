@@ -1,5 +1,6 @@
 import { styled } from '@/styles'
 import 'react-modern-drawer/dist/index.css'
+import * as Dialog from '@radix-ui/react-dialog'
 
 export const ExploreContainer = styled('div', {
   width: '100%',
@@ -314,4 +315,70 @@ export const DrawerBookReview = styled('div', {
     fontSize: '$sm',
     lineHeight: '$base',
   },
+})
+
+export const DialogOverlay = styled(Dialog.Overlay, {
+  background: 'black',
+  opacity: 0.5,
+  position: 'fixed',
+  inset: 0,
+  zIndex: 1000,
+})
+
+export const DialogContent = styled(Dialog.Content, {
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  position: 'fixed',
+  background: '$gray700',
+  width: 516,
+  height: 337,
+  borderRadius: 12,
+  padding: '3.5rem 4.5rem',
+  zIndex: 1100,
+
+  display: 'flex',
+  flexDirection: 'column',
+})
+
+export const DialogClose = styled(Dialog.Close, {
+  all: 'unset',
+
+  display: 'flex',
+  alignItems: 'center',
+
+  cursor: 'pointer',
+  color: '$gray400',
+
+  position: 'absolute',
+  right: '$4',
+  top: '$4',
+
+  '&:hover': {
+    color: '$gray300',
+  },
+
+  svg: {
+    width: 24,
+    height: 24,
+  },
+})
+
+export const DialogTitle = styled(Dialog.Title, {
+  color: '$gray200',
+  lineHeight: '$short',
+  fontWeight: '$bold',
+  fontSize: '$md',
+
+  marginTop: '$4',
+  textAlign: 'center',
+})
+
+export const DialogSignInProvidersContainer = styled('div', {
+  width: '100%',
+  marginTop: '$10',
+
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '$4',
 })
