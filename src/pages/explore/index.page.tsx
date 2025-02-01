@@ -73,6 +73,7 @@ interface BooksData {
   total_pages: number
   created_at: string
   avgRating: number
+  userAlreadyReviewed: boolean
 }
 
 interface BookData {

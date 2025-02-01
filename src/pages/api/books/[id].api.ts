@@ -1,5 +1,17 @@
 import { prisma } from '@/lib/prisma'
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '../auth/[...nextauth].api'
+
+type User = {
+  id: string
+  name: string
+  email: string
+  emailVerified: string
+  image: string
+  created_at: string
+  updated_at: string
+}
 
 export default async function handler(
   req: NextApiRequest,
@@ -60,7 +72,22 @@ export default async function handler(
     ratingsAmount: book.ratings.length,
     categories: bookCategories,
     avgRating,
+    userAlreadyReviewed: false,
   }
+
+  const session = await getServerSession(req, res, authOptions)
+
+  if (!session) {
+    return res.json(bookToReturn)
+  }
+
+  const user = <User>session.user
+
+  const userAlreadyReviewed = bookToReturn.ratings.some(
+    (rating) => rating.user_id === user.id,
+  )
+
+  bookToReturn.userAlreadyReviewed = userAlreadyReviewed
 
   return res.json(bookToReturn)
 }
