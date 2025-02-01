@@ -244,7 +244,6 @@ export const DrawerBookReviewsContainer = styled('div', {
   '> header': {
     display: 'flex',
     justifyContent: 'space-between',
-    alignItems: 'center',
     marginBottom: '$4',
 
     h3: {
