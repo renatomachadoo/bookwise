@@ -1,4 +1,3 @@
-import { NavigationMenu } from '@/components/navigation-menu'
 import {
   BookCategory,
   BooksContainer,
@@ -48,10 +47,12 @@ import { Avatar } from '@/components/avatar'
 import { intlFormatDistance } from 'date-fns'
 
 import * as Dialog from '@radix-ui/react-dialog'
-import { SignInProviderButton } from '@/components/sign-in-provider-button'
 
 import googleLogo from '@/assets/google-logo.svg'
 import githubLogo from '@/assets/github-logo.svg'
+import { SignInProviderButton } from '@/components/Sign-in-provider-button'
+import { ReviewBookCard } from '@/components/review-book-card'
+import { NavigationMenu } from '@/components/Navigation-menu'
 
 const searchFormSchema = z.object({
   search: z.string(),
@@ -104,10 +105,11 @@ interface BookData {
   ratingsAmount: number
   categories: string[]
   avgRating: number
+  userAlreadyReviewed: boolean
 }
 
 export default function Explore() {
-  const { status } = useSession()
+  const { data: loggedUserData, status } = useSession()
   const router = useRouter()
 
   const isAuthenticated = status === 'authenticated'
@@ -119,6 +121,8 @@ export default function Explore() {
   const selectedCategory = router.query.category
   const search = router.query.search
   const selectedBookId = router.query.book
+
+  const loggedUserImage = loggedUserData?.user?.image || ''
 
   const { data: booksCategories } = useQuery<CategoriesData[]>({
     queryKey: ['books-categories'],
@@ -145,9 +149,6 @@ export default function Explore() {
     queryKey: ['book', selectedBookId],
     queryFn: async () => {
       const response = await api.get(`/books/${selectedBookId}`)
-
-      // await new Promise((resolve) => setTimeout(resolve, 1000))
-
       return response.data
     },
     enabled: !!selectedBookId,
@@ -380,6 +381,9 @@ export default function Explore() {
                 )}
               </header>
               <DrawerBookReviews>
+                {isAuthenticated && book && !book.userAlreadyReviewed && (
+                  <ReviewBookCard avatar={loggedUserImage} />
+                )}
                 {book ? (
                   book.ratings.map((rating) => {
                     return (

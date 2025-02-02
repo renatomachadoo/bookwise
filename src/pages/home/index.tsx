@@ -104,6 +104,10 @@ export default function Home() {
     await router.push(`/explore?book=${bookId}`)
   }
 
+  async function handleViewAllPopularBooksClick() {
+    await router.push('/explore')
+  }
+
   return (
     <HomeContainer>
       <NavigationMenu />
@@ -146,7 +150,7 @@ export default function Home() {
               <SectionDivider text="Livros populares">
                 <Action
                   size="sm"
-                  onClick={() => console.log('ola')}
+                  onClick={handleViewAllPopularBooksClick}
                   text="Ver todos"
                   icon={CaretRight}
                 />

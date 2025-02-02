@@ -13,8 +13,6 @@ import {
 import bannerImage from '@/assets/sign-in-banner.png'
 import bookWiseLogo from '@/assets/bookwise-logo.svg'
 
-import { SignInProviderButton } from '@/components/sign-in-provider-button'
-
 import googleLogo from '@/assets/google-logo.svg'
 import githubLogo from '@/assets/github-logo.svg'
 import visiterLogo from '@/assets/visiter-logo.svg'
@@ -23,6 +21,7 @@ import { signIn } from 'next-auth/react'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '../api/auth/[...nextauth].api'
 import { GetServerSideProps } from 'next'
+import { SignInProviderButton } from '@/components/Sign-in-provider-button'
 
 export default function SignIn() {
   const router = useRouter()

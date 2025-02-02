@@ -1,0 +1,73 @@
+import { styled } from '@/styles'
+
+export const ReviewBookCardFormContainer = styled('form', {
+  width: '100%',
+  padding: '$6',
+
+  display: 'flex',
+  flexDirection: 'column',
+
+  background: '$gray700',
+
+  borderRadius: 8,
+
+  '> header': {
+    display: 'flex',
+    justifyContent: 'space-between',
+    gap: '$4',
+  },
+
+  textarea: {
+    all: 'unset',
+
+    height: '10.25rem',
+
+    background: '$gray800',
+
+    marginTop: '$6',
+    padding: '0.875rem $5',
+    borderRadius: 4,
+
+    fontSize: '$sm',
+    lineHeight: '$base',
+    color: '$gray200',
+
+    border: '1px solid $gray500',
+
+    '&:focus': {
+      border: '1px solid $green200',
+    },
+
+    '&::placeholder': {
+      fontSize: '$sm',
+      lineHeight: '$base',
+      color: '$gray400',
+    },
+  },
+})
+
+export const RatingInputContainer = styled('div', {
+  display: 'flex',
+  gap: '$1',
+  color: '$purple100',
+
+  button: {
+    all: 'unset',
+
+    height: 'fit-content',
+
+    display: 'flex',
+    alignItems: 'center',
+
+    cursor: 'pointer',
+
+    '&:focus': {
+      boxShadow: '0 0 0 2px $colors$gray500',
+    },
+  },
+
+  svg: {
+    width: 24,
+    height: 24,
+  },
+})
