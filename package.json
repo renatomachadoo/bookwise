@@ -29,6 +29,7 @@
     "react-hook-form": "^7.54.2",
     "react-loading-skeleton": "^3.5.0",
     "react-modern-drawer": "^1.4.0",
+    "uuid": "^11.0.5",
     "zod": "^3.24.1"
   },
   "devDependencies": {

@@ -1,4 +1,3 @@
-import { NavigationMenu } from '@/components/navigation-menu'
 import {
   Aside,
   HomeContainer,
@@ -19,6 +18,8 @@ import { BookReviewCard } from '@/components/book-review-card'
 import { BookCardSmall } from '@/components/book-card-small'
 import { useSession } from 'next-auth/react'
 import { LastReadedBookCard } from '@/components/last-readed-book-card'
+import { NavigationMenu } from '@/components/Navigation-menu'
+import { useRouter } from 'next/router'
 
 type BookCardData = {
   id: string
@@ -70,6 +71,7 @@ interface LastReadedBookData {
 }
 
 export default function Home() {
+  const router = useRouter()
   const session = useSession()
   const isAuthenticated = session.status === 'authenticated'
 
@@ -97,6 +99,10 @@ export default function Home() {
     },
     enabled: isAuthenticated,
   })
+
+  async function handlePopularBookClick(bookId: string) {
+    await router.push(`/explore?book=${bookId}`)
+  }
 
   return (
     <HomeContainer>
@@ -151,6 +157,7 @@ export default function Home() {
                     <BookCardSmall
                       key={popularBook.id}
                       bookData={popularBook}
+                      onClick={() => handlePopularBookClick(popularBook.id)}
                     />
                   )
                 })}
