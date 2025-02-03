@@ -27,8 +27,6 @@ export default async function handler(
     return res.status(401).end()
   }
 
-  console.log(session)
-
   const user = <User>session.user
 
   const user_id = req.query.user_id
@@ -41,6 +39,9 @@ export default async function handler(
     },
     orderBy: {
       created_at: 'desc',
+    },
+    include: {
+      book: true,
     },
   })
 

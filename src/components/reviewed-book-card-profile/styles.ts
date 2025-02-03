@@ -1,53 +1,49 @@
 import { styled } from '@/styles'
 
-export const ReviewedBookCardProfileContainer = styled('button', {
-  border: 0,
-  outline: 'none',
-
-  position: 'relative',
+export const ReviewedBookCardProfileContainer = styled('div', {
   width: '100%',
-  padding: '1.125rem $5',
+  padding: '$6',
   borderRadius: 8,
   textAlign: 'start',
 
   background: '$gray700',
 
-  display: 'flex',
-  gap: '$5',
-
-  '&:hover': {
-    cursor: 'pointer',
-    outline: '2px solid $gray600',
-  },
-
-  img: {
-    objectFit: 'cover',
-    borderRadius: 4,
-  },
-
   '> div': {
-    height: '100%',
-    width: '100%',
-
     display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
+    gap: '$5',
 
-    header: {
+    img: {
+      objectFit: 'cover',
+      borderRadius: 4,
+    },
+
+    '> div': {
+      width: '100%',
+
       display: 'flex',
       flexDirection: 'column',
+      justifyContent: 'space-between',
 
-      span: {
-        color: '$gray100',
-        fontWeight: '$bold',
-        lineHeight: '$short',
-      },
+      header: {
+        display: 'flex',
+        flexDirection: 'column',
 
-      small: {
-        color: '$gray400',
-        fontSize: '$sm',
+        span: {
+          color: '$gray100',
+          fontWeight: '$bold',
+          lineHeight: '$short',
+        },
+
+        small: {
+          color: '$gray400',
+          fontSize: '$sm',
+        },
       },
     },
+  },
+
+  p: {
+    marginTop: '$6',
   },
 })
 

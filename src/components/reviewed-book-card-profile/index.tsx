@@ -3,52 +3,61 @@ import { ReviewedBookCardProfileContainer, RatingContainer } from './styles'
 import { Star } from '@phosphor-icons/react'
 import { ComponentProps } from 'react'
 
-type BookCardData = {
+type Book = {
+  author: string
+  cover_url: string
+  created_at: string
   id: string
   name: string
-  author: string
   summary: string
-  cover_url: string
   total_pages: number
+}
+
+interface Data {
+  book_id: string
   created_at: string
-  avgRating: number
+  description: string
+  id: string
+  rate: number
+  user_id: string
+  book: Book
 }
 
 interface BookCardProps
   extends ComponentProps<typeof ReviewedBookCardProfileContainer> {
-  bookData: BookCardData
-  imageSize?: 'sm' | 'md'
+  data: Data
 }
 
 export function ReviewedBookCardProfile({
-  bookData: { name, author, avgRating, cover_url },
-  imageSize = 'sm',
+  data: {
+    rate,
+    description,
+    book: { name, author, cover_url },
+  },
   ...rest
 }: BookCardProps) {
   const bookImageUrl = cover_url.replace('public', '')
 
   return (
     <ReviewedBookCardProfileContainer {...rest}>
-      {imageSize === 'sm' && (
-        <Image width={64} height={94} src={bookImageUrl} alt={name} />
-      )}
-      {imageSize === 'md' && (
-        <Image width={108} height={152} src={bookImageUrl} alt={name} />
-      )}
       <div>
-        <header>
-          <span>{name}</span>
-          <small>{author}</small>
-        </header>
-        <RatingContainer>
-          {Array.from({ length: 5 }).map((_, i) => {
-            if (i + 1 <= avgRating) {
-              return <Star key={i} weight="fill" />
-            }
-            return <Star key={i} />
-          })}
-        </RatingContainer>
+        <Image width={98} height={134} src={bookImageUrl} alt={name} />
+        <div>
+          <header>
+            <span>{name}</span>
+            <small>{author}</small>
+          </header>
+          <RatingContainer>
+            {Array.from({ length: 5 }).map((_, i) => {
+              if (i + 1 <= rate) {
+                return <Star key={i} weight="fill" />
+              }
+              return <Star key={i} />
+            })}
+          </RatingContainer>
+        </div>
       </div>
+      <p>{description}</p>
     </ReviewedBookCardProfileContainer>
   )
 }
