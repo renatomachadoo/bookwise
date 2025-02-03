@@ -29,13 +29,21 @@ export default async function handler(
 
   const user = <User>session.user
 
-  const user_id = req.query.user_id
+  const user_id = String(req.query.user_id || '')
+  const search = String(req.query.search || '')
 
-  const userIdToSearch = (user_id && String(user_id)) || user.id
+  const userIdToSearch = user_id || user.id
 
   const ratingsByThisUser = await prisma.rating.findMany({
     where: {
-      user_id: userIdToSearch,
+      AND: {
+        book: {
+          name: {
+            contains: search,
+          },
+        },
+        user_id: userIdToSearch,
+      },
     },
     orderBy: {
       created_at: 'desc',

@@ -21,7 +21,7 @@ import { signIn } from 'next-auth/react'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '../api/auth/[...nextauth].api'
 import { GetServerSideProps } from 'next'
-import { SignInProviderButton } from '@/components/Sign-in-provider-button'
+import { SignInProviderButton } from '@/components/sign-in-provider-button'
 
 export default function SignIn() {
   const router = useRouter()

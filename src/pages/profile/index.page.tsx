@@ -13,6 +13,16 @@ import { useQuery } from '@tanstack/react-query'
 import { api } from '@/lib/axios'
 import { useRouter } from 'next/router'
 import { ReviewedBookCardProfile } from '@/components/reviewed-book-card-profile'
+import { intlFormatDistance } from 'date-fns'
+import { z } from 'zod'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+
+const searchFormSchema = z.object({
+  search: z.string(),
+})
+
+type SearchFormData = z.infer<typeof searchFormSchema>
 
 interface UserReviewsResponse {
   book_id: string
@@ -35,17 +45,34 @@ interface UserReviewsResponse {
 export default function Profile() {
   const router = useRouter()
 
+  const { handleSubmit, register } = useForm<SearchFormData>({
+    resolver: zodResolver(searchFormSchema),
+  })
+
   const userId = router.query.user_id
+  const search = router.query.search
 
   const { data: userReviews } = useQuery<UserReviewsResponse[]>({
-    queryKey: ['user-reviews'],
+    queryKey: ['user-reviews', search],
     queryFn: async () => {
       const response = await api.get('/books/review/user', {
-        params: userId,
+        params: {
+          user_id: userId,
+          search,
+        },
       })
       return response.data
     },
   })
+
+  async function handleSubmitSearch(data: SearchFormData) {
+    const { search } = data
+
+    router.replace({
+      pathname: router.pathname,
+      query: { ...router.query, search },
+    })
+  }
 
   return (
     <ProfileContainer>
@@ -56,15 +83,25 @@ export default function Profile() {
         </header>
         <main>
           <div>
-            <SearchReviewForm>
+            <SearchReviewForm onSubmit={handleSubmit(handleSubmitSearch)}>
               <TextInput
                 placeholder="Buscar livro avaliado"
                 icon={MagnifyingGlass}
+                {...register('search')}
               />
             </SearchReviewForm>
             <UserReviewsContainer>
               {userReviews?.map((review) => {
-                return <ReviewedBookCardProfile key={review.id} data={review} />
+                return (
+                  <div key={review.id}>
+                    <span>
+                      {intlFormatDistance(review.created_at, new Date(), {
+                        locale: 'pt',
+                      })}
+                    </span>
+                    <ReviewedBookCardProfile data={review} />
+                  </div>
+                )
               })}
             </UserReviewsContainer>
           </div>

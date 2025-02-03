@@ -36,6 +36,7 @@ export const ProfileContentContainer = styled('div', {
     '> div': {
       height: '100%',
       overflow: 'auto',
+      paddingRight: '$2',
     },
   },
 })
@@ -50,4 +51,17 @@ export const UserReviewsContainer = styled('div', {
   display: 'flex',
   flexDirection: 'column',
   gap: '$6',
+
+  '> div': {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '$2',
+
+    '> span': {
+      color: '$gray300',
+      fontSize: '$sm',
+      lineHeigh: '$base',
+      textTransform: 'capitalize',
+    },
+  },
 })

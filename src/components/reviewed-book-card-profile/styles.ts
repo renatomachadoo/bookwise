@@ -44,6 +44,10 @@ export const ReviewedBookCardProfileContainer = styled('div', {
 
   p: {
     marginTop: '$6',
+
+    color: '$gray300',
+    fontSize: '$sm',
+    lineHeight: '$base',
   },
 })
 
