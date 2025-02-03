@@ -71,3 +71,57 @@ export const RatingInputContainer = styled('div', {
     height: 24,
   },
 })
+
+export const FormButtonsContainer = styled('div', {
+  marginTop: '$3',
+
+  display: 'flex',
+  justifyContent: 'end',
+  gap: '$2',
+})
+
+export const FormButton = styled('button', {
+  all: 'unset',
+
+  background: '$gray600',
+
+  height: 40,
+  width: 40,
+
+  borderRadius: 4,
+
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+
+  cursor: 'pointer',
+
+  svg: {
+    height: 24,
+    width: 24,
+  },
+
+  '&:hover:not(:disabled)': {
+    background: '$gray500',
+  },
+
+  '&:disabled': {
+    cursor: 'not-allowed',
+    opacity: 0.8,
+  },
+
+  variants: {
+    color: {
+      purple: {
+        color: '$purple100',
+      },
+      green: {
+        color: '$green100',
+      },
+    },
+  },
+
+  defaultVariants: {
+    color: 'purple',
+  },
+})

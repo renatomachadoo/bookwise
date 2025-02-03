@@ -52,13 +52,21 @@ import googleLogo from '@/assets/google-logo.svg'
 import githubLogo from '@/assets/github-logo.svg'
 import { SignInProviderButton } from '@/components/Sign-in-provider-button'
 import { ReviewBookCard } from '@/components/review-book-card'
-import { NavigationMenu } from '@/components/Navigation-menu'
+import { NavigationMenu } from '@/components/navigation-menu'
 
 const searchFormSchema = z.object({
   search: z.string(),
 })
 
 type SearchFormData = z.infer<typeof searchFormSchema>
+
+type User = {
+  id: string
+  name: string
+  image: string
+  createdAt: string
+  updatedAt: string
+}
 
 interface CategoriesData {
   id: string
@@ -77,7 +85,7 @@ interface BooksData {
   userAlreadyReviewed: boolean
 }
 
-interface BookData {
+export interface BookData {
   id: string
   name: string
   author: string
@@ -85,23 +93,22 @@ interface BookData {
   cover_url: string
   total_pages: number
   created_at: string
-  ratings: [
-    {
+  ratings: {
+    id: string
+    rate: number
+    description: string
+    created_at: string
+    book_id: string
+    user_id: string
+    user: {
       id: string
-      rate: number
-      description: string
-      created_at: string
-      book_id: string
-      user_id: string
-      user: {
-        id: string
-        name: string
-        image: string
-        createdAt: string
-        updatedAt: string
-      }
-    },
-  ]
+      name: string
+      image: string
+      createdAt: string
+      updatedAt: string
+    }
+  }[]
+
   ratingsAmount: number
   categories: string[]
   avgRating: number
@@ -123,6 +130,7 @@ export default function Explore() {
   const selectedBookId = router.query.book
 
   const loggedUserImage = loggedUserData?.user?.image || ''
+  const user = (loggedUserData?.user as User) || null
 
   const { data: booksCategories } = useQuery<CategoriesData[]>({
     queryKey: ['books-categories'],
@@ -186,6 +194,9 @@ export default function Explore() {
   }
 
   const bookImageUrl = book?.cover_url.replace('public', '') || ''
+  const bookReviewedByUser = book?.ratings.find(
+    (rating) => rating.user_id === user.id,
+  )
 
   return (
     <>
@@ -385,21 +396,21 @@ export default function Explore() {
                   <ReviewBookCard avatar={loggedUserImage} />
                 )}
                 {book ? (
-                  book.ratings.map((rating) => {
-                    return (
-                      <DrawerBookReview key={rating.id}>
+                  <>
+                    {bookReviewedByUser && (
+                      <DrawerBookReview variant="light">
                         <header>
                           <Avatar
-                            src={rating.user.image}
-                            alt={rating.user.name}
+                            src={bookReviewedByUser.user.image}
+                            alt={bookReviewedByUser.user.name}
                             size="md"
                           />
                           <div>
                             <div>
-                              <span>{rating.user.name}</span>
+                              <span>{bookReviewedByUser.user.name}</span>
                               <small>
                                 {intlFormatDistance(
-                                  rating.created_at,
+                                  bookReviewedByUser.created_at,
                                   new Date(),
                                   { locale: 'pt' },
                                 )}
@@ -407,7 +418,7 @@ export default function Explore() {
                             </div>
                             <span>
                               {Array.from({ length: 5 }).map((_, i) => {
-                                if (i + 1 <= rating.rate) {
+                                if (i + 1 <= bookReviewedByUser.rate) {
                                   return <Star key={i} weight="fill" />
                                 }
                                 return <Star key={i} />
@@ -415,10 +426,49 @@ export default function Explore() {
                             </span>
                           </div>
                         </header>
-                        <p>{rating.description}</p>
+                        <p>{bookReviewedByUser.description}</p>
                       </DrawerBookReview>
-                    )
-                  })
+                    )}
+
+                    {book.ratings.map((rating) => {
+                      if (rating.user_id !== user?.id) {
+                        return (
+                          <DrawerBookReview key={rating.id}>
+                            <header>
+                              <Avatar
+                                src={rating.user.image}
+                                alt={rating.user.name}
+                                size="md"
+                              />
+                              <div>
+                                <div>
+                                  <span>{rating.user.name}</span>
+                                  <small>
+                                    {intlFormatDistance(
+                                      rating.created_at,
+                                      new Date(),
+                                      { locale: 'pt' },
+                                    )}
+                                  </small>
+                                </div>
+                                <span>
+                                  {Array.from({ length: 5 }).map((_, i) => {
+                                    if (i + 1 <= rating.rate) {
+                                      return <Star key={i} weight="fill" />
+                                    }
+                                    return <Star key={i} />
+                                  })}
+                                </span>
+                              </div>
+                            </header>
+                            <p>{rating.description}</p>
+                          </DrawerBookReview>
+                        )
+                      }
+
+                      return null
+                    })}
+                  </>
                 ) : (
                   <>
                     <Skeleton width="100%" height={180} />

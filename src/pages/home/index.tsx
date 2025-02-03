@@ -18,7 +18,7 @@ import { BookReviewCard } from '@/components/book-review-card'
 import { BookCardSmall } from '@/components/book-card-small'
 import { useSession } from 'next-auth/react'
 import { LastReadedBookCard } from '@/components/last-readed-book-card'
-import { NavigationMenu } from '@/components/Navigation-menu'
+import { NavigationMenu } from '@/components/navigation-menu'
 import { useRouter } from 'next/router'
 
 type BookCardData = {

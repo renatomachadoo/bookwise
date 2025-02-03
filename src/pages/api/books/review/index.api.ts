@@ -16,9 +16,8 @@ type User = {
 
 const createReviewBodySchema = z.object({
   rate: z.number().min(0).max(5),
-  description: z.string().min(1),
+  description: z.string().min(1).max(450),
   book_id: z.string(),
-  user_id: z.string(),
 })
 
 export default async function handler(
@@ -47,6 +46,17 @@ export default async function handler(
 
   if (!bookExists) {
     return res.status(404).json({ message: 'Book not found' })
+  }
+
+  const userAlreadyReviewed = await prisma.rating.findFirst({
+    where: {
+      book_id: bookExists.id,
+      user_id: user.id,
+    },
+  })
+
+  if (userAlreadyReviewed) {
+    return res.status(409).json({ message: 'User already reviewed this book' })
   }
 
   await prisma.rating.create({

@@ -3,6 +3,11 @@ import { useRouter } from 'next/router'
 import Image from 'next/image'
 import Link from 'next/link'
 
+import { Binoculars, ChartLineUp, SignIn, User } from '@phosphor-icons/react'
+
+import bookWiseLogo from '@/assets/bookwise-logo.svg'
+import { Avatar } from '@/components/avatar'
+import { getNameInitials } from '@/utils/get-name-initials'
 import {
   BlurBottomLeft,
   BlurMiddle,
@@ -14,12 +19,6 @@ import {
   NavigationItemsContainer,
   NavigationMenuContainer,
 } from './styles'
-
-import { Binoculars, ChartLineUp, SignIn, User } from '@phosphor-icons/react'
-
-import bookWiseLogo from '@/assets/bookwise-logo.svg'
-import { Avatar } from '@/components/avatar'
-import { getNameInitials } from '@/utils/get-name-initials'
 
 export function NavigationMenu() {
   const { data, status } = useSession()

@@ -261,7 +261,6 @@ export const DrawerBookReviews = styled('div', {
 })
 
 export const DrawerBookReview = styled('div', {
-  background: '$gray700',
   padding: '$6',
   borderRadius: 8,
 
@@ -313,6 +312,21 @@ export const DrawerBookReview = styled('div', {
     color: '$gray300',
     fontSize: '$sm',
     lineHeight: '$base',
+  },
+
+  variants: {
+    variant: {
+      dark: {
+        background: '$gray700',
+      },
+      light: {
+        background: '$gray600',
+      },
+    },
+  },
+
+  defaultVariants: {
+    variant: 'dark',
   },
 })
 
