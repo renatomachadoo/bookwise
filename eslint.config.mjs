@@ -18,6 +18,7 @@ const eslintConfig = [
     ],
     rules: {
       camelcase: 'off',
+      'n/no-deprecated-api': 'off',
     },
   }),
 ]
