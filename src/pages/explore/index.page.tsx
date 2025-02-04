@@ -195,7 +195,7 @@ export default function Explore() {
 
   const bookImageUrl = book?.cover_url.replace('public', '') || ''
   const bookReviewedByUser = book?.ratings.find(
-    (rating) => rating.user_id === user.id,
+    (rating) => rating.user_id === user?.id,
   )
 
   return (
