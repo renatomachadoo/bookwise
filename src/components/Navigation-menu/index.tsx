@@ -80,7 +80,8 @@ export function NavigationMenu() {
             alt={data?.user?.name || ''}
             fallbackText={usernameInitials || ''}
           />
-          {data?.user?.name} <SignIn />
+          <span>{data?.user?.name}</span>
+          <SignIn />
         </LogoutButton>
       ) : (
         <LoginButton onClick={handleSignIn}>

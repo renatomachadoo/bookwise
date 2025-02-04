@@ -34,9 +34,8 @@ export const ProfileContentContainer = styled('div', {
     gap: '4rem',
 
     '> div': {
-      height: '100%',
-      overflow: 'auto',
       paddingRight: '$2',
+      overflow: 'auto',
     },
   },
 })
@@ -64,4 +63,45 @@ export const UserReviewsContainer = styled('div', {
       textTransform: 'capitalize',
     },
   },
+})
+
+export const UserProfileAside = styled('div', {
+  height: 'fit-content',
+  width: '100%',
+
+  borderLeft: '1px solid $gray700',
+
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+
+  header: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+
+    '> span': {
+      marginTop: '$5',
+      color: '$gray100',
+      fontSize: '$lg',
+      fontWeight: '$bold',
+      lineHeight: '$short',
+    },
+
+    '> small': {
+      color: '$gray400',
+      fontSize: '$sm',
+      lineHeight: '$base',
+    },
+  },
+})
+
+export const ProfileAsideSeparator = styled('div', {
+  margin: '$8 0px',
+
+  width: 32,
+  height: 4,
+  background: '$gradient-horizontal',
+  borderRadius: 9999,
 })

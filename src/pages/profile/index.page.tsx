@@ -1,8 +1,11 @@
 import { NavigationMenu } from '@/components/navigation-menu'
 import {
+  ProfileAsideSeparator,
   ProfileContainer,
   ProfileContentContainer,
+  ProfileInfo,
   SearchReviewForm,
+  UserProfileAside,
   UserReviewsContainer,
 } from './styles'
 import { PageTitle } from '@/components/page-title'
@@ -17,6 +20,7 @@ import { intlFormatDistance } from 'date-fns'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Avatar } from '@/components/avatar'
 
 const searchFormSchema = z.object({
   search: z.string(),
@@ -42,6 +46,20 @@ interface UserReviewsResponse {
   }
 }
 
+interface UserProfileInfoResponse {
+  id: string
+  name: string
+  image: string
+  created_at: string
+  totalPagesRead: string
+  booksReviewed: number
+  authorsReadedAmount: number
+  mostReadedCategory: {
+    category: string
+    amount: number
+  }
+}
+
 export default function Profile() {
   const router = useRouter()
 
@@ -59,6 +77,18 @@ export default function Profile() {
         params: {
           user_id: userId,
           search,
+        },
+      })
+      return response.data
+    },
+  })
+
+  const { data: userData } = useQuery<UserProfileInfoResponse>({
+    queryKey: ['user-profile-info'],
+    queryFn: async () => {
+      const response = await api.get('/users', {
+        params: {
+          user_id: userId,
         },
       })
       return response.data
@@ -105,7 +135,14 @@ export default function Profile() {
               })}
             </UserReviewsContainer>
           </div>
-          <div>2</div>
+          <UserProfileAside>
+            <header>
+              <Avatar src={userData?.image} size="lg" />
+              <span>{userData?.name}</span>
+              <small>{userData?.created_at}</small>
+            </header>
+            <ProfileAsideSeparator />
+          </UserProfileAside>
         </main>
       </ProfileContentContainer>
     </ProfileContainer>

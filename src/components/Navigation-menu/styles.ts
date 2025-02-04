@@ -125,17 +125,26 @@ export const LoginButton = styled('button', {
 
 export const LogoutButton = styled('button', {
   all: 'unset',
+  width: '100%',
   zIndex: 5,
 
   cursor: 'pointer',
 
-  display: 'flex',
+  display: 'inline-flex',
   alignItems: 'center',
+  justifyContent: 'center',
   gap: '$3',
 
   fontSize: '$sm',
   fontWeight: '$regular',
   color: '$gray200',
+
+  '> span': {
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
+    maxWidth: 125,
+  },
 
   '&:focus': {
     boxShadow: '0 0 0 2px $colors$gray500',
@@ -147,8 +156,8 @@ export const LogoutButton = styled('button', {
     color: '#F75A68',
   },
 
-  margin: 'auto 0 $6',
-  padding: '0 1rem',
+  margin: 'auto auto $6',
+  // padding: '0 1rem',
 })
 
 export const BlurTopLeft = styled('div', {
