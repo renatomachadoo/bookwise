@@ -23,7 +23,7 @@ import { useQuery } from '@tanstack/react-query'
 import { api } from '@/lib/axios'
 import { useRouter } from 'next/router'
 import { ReviewedBookCardProfile } from '@/components/reviewed-book-card-profile'
-import { intlFormatDistance } from 'date-fns'
+import { format, intlFormatDistance } from 'date-fns'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -146,7 +146,9 @@ export default function Profile() {
             <header>
               <Avatar src={userData?.image} size="lg" />
               <span>{userData?.name}</span>
-              <small>{userData?.created_at}</small>
+              {userData?.created_at && (
+                <small>membro desde {format(userData.created_at, 'y')}</small>
+              )}
             </header>
             <ProfileAsideSeparator></ProfileAsideSeparator>
             <ProfileStatsContainer>
