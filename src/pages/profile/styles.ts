@@ -67,6 +67,7 @@ export const UserReviewsContainer = styled('div', {
 
 export const UserProfileAside = styled('div', {
   height: 'fit-content',
+  maxHeight: '100%',
   width: '100%',
 
   borderLeft: '1px solid $gray700',
@@ -93,15 +94,55 @@ export const UserProfileAside = styled('div', {
       color: '$gray400',
       fontSize: '$sm',
       lineHeight: '$base',
+      marginBottom: '$8',
     },
   },
 })
 
 export const ProfileAsideSeparator = styled('div', {
-  margin: '$8 0px',
+  margin: '$8 0',
 
   width: 32,
   height: 4,
+  minHeight: 4,
   background: '$gradient-horizontal',
   borderRadius: 9999,
+})
+
+export const ProfileStatsContainer = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '$10',
+  padding: '$5',
+
+  '> div': {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '$5',
+
+    svg: {
+      width: 32,
+      height: 32,
+      color: '$green100',
+    },
+
+    '> div': {
+      display: 'flex',
+      flexDirection: 'column',
+
+      span: {
+        color: '$gray200',
+        fontSize: '$sm',
+        fontWeight: '$bold',
+        lineHeight: '$short',
+      },
+
+      small: {
+        color: '$gray300',
+        fontSize: '$sm',
+        fontWeight: '$regular',
+        lineHeight: '$base',
+      },
+    },
+  },
 })

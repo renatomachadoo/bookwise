@@ -3,14 +3,21 @@ import {
   ProfileAsideSeparator,
   ProfileContainer,
   ProfileContentContainer,
-  ProfileInfo,
+  ProfileStatsContainer,
   SearchReviewForm,
   UserProfileAside,
   UserReviewsContainer,
 } from './styles'
 import { PageTitle } from '@/components/page-title'
 
-import { MagnifyingGlass, User } from '@phosphor-icons/react'
+import {
+  BookmarkSimple,
+  BookOpen,
+  Books,
+  MagnifyingGlass,
+  User,
+  UserList,
+} from '@phosphor-icons/react'
 import { TextInput } from '@/components/text-input'
 import { useQuery } from '@tanstack/react-query'
 import { api } from '@/lib/axios'
@@ -51,7 +58,7 @@ interface UserProfileInfoResponse {
   name: string
   image: string
   created_at: string
-  totalPagesRead: string
+  totalPagesReaded: number
   booksReviewed: number
   authorsReadedAmount: number
   mostReadedCategory: {
@@ -141,7 +148,40 @@ export default function Profile() {
               <span>{userData?.name}</span>
               <small>{userData?.created_at}</small>
             </header>
-            <ProfileAsideSeparator />
+            <ProfileAsideSeparator></ProfileAsideSeparator>
+            <ProfileStatsContainer>
+              <div>
+                <BookOpen />
+                <div>
+                  <span>{userData?.totalPagesReaded}</span>
+                  <small>Páginas lidas</small>
+                </div>
+              </div>
+
+              <div>
+                <Books />
+                <div>
+                  <span>{userData?.booksReviewed}</span>
+                  <small>Livros avaliado</small>
+                </div>
+              </div>
+
+              <div>
+                <UserList />
+                <div>
+                  <span>{userData?.authorsReadedAmount}</span>
+                  <small>Autores lidos</small>
+                </div>
+              </div>
+
+              <div>
+                <BookmarkSimple />
+                <div>
+                  <span>{userData?.mostReadedCategory.category}</span>
+                  <small>Categoria mais lida</small>
+                </div>
+              </div>
+            </ProfileStatsContainer>
           </UserProfileAside>
         </main>
       </ProfileContentContainer>
