@@ -51,8 +51,8 @@ import * as Dialog from '@radix-ui/react-dialog'
 import googleLogo from '@/assets/google-logo.svg'
 import githubLogo from '@/assets/github-logo.svg'
 import { ReviewBookCard } from '@/components/review-book-card'
-import { NavigationMenu } from '@/components/navigation-menu'
 import { SignInProviderButton } from '@/components/sign-in-provider-button'
+import { NavigationMenu } from '@/components/navigation-menu'
 
 const searchFormSchema = z.object({
   search: z.string(),
