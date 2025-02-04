@@ -108,6 +108,10 @@ export default function Home() {
     await router.push('/explore')
   }
 
+  async function handleViewAllReviews() {
+    await router.push('/profile')
+  }
+
   return (
     <HomeContainer>
       <NavigationMenu />
@@ -122,7 +126,7 @@ export default function Home() {
                 <SectionDivider text="Sua última leitura">
                   <Action
                     size="sm"
-                    onClick={() => console.log('ola')}
+                    onClick={handleViewAllReviews}
                     text="Ver todas"
                     icon={CaretRight}
                   />

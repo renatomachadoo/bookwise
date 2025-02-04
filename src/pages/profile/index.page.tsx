@@ -14,6 +14,7 @@ import {
   BookmarkSimple,
   BookOpen,
   Books,
+  CaretLeft,
   MagnifyingGlass,
   User,
   UserList,
@@ -28,6 +29,21 @@ import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Avatar } from '@/components/avatar'
+import { GetServerSideProps } from 'next'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '../api/auth/[...nextauth].api'
+import { prisma } from '@/lib/prisma'
+import { Action } from '@/components/action'
+
+type User = {
+  id: string
+  name: string
+  email: string
+  emailVerified: string
+  image: string
+  created_at: string
+  updated_at: string
+}
 
 const searchFormSchema = z.object({
   search: z.string(),
@@ -65,20 +81,31 @@ interface UserProfileInfoResponse {
     category: string
     amount: number
   }
+  userIsAdifferentUser: boolean
 }
 
-export default function Profile() {
+export default function Profile({
+  id,
+  authorsReadedAmount,
+  booksReviewed,
+  created_at,
+  image,
+  mostReadedCategory,
+  name,
+  totalPagesReaded,
+  userIsAdifferentUser,
+}: UserProfileInfoResponse) {
   const router = useRouter()
 
-  const { handleSubmit, register } = useForm<SearchFormData>({
+  const { handleSubmit, register, reset } = useForm<SearchFormData>({
     resolver: zodResolver(searchFormSchema),
   })
 
-  const userId = router.query.user_id
+  const userId = router.query.id
   const search = router.query.search
 
   const { data: userReviews } = useQuery<UserReviewsResponse[]>({
-    queryKey: ['user-reviews', search],
+    queryKey: ['user-reviews', search, id],
     queryFn: async () => {
       const response = await api.get('/books/review/user', {
         params: {
@@ -90,17 +117,10 @@ export default function Profile() {
     },
   })
 
-  const { data: userData } = useQuery<UserProfileInfoResponse>({
-    queryKey: ['user-profile-info'],
-    queryFn: async () => {
-      const response = await api.get('/users', {
-        params: {
-          user_id: userId,
-        },
-      })
-      return response.data
-    },
-  })
+  async function handleComeBackToProfile() {
+    reset()
+    await router.push('/profile')
+  }
 
   async function handleSubmitSearch(data: SearchFormData) {
     const { search } = data
@@ -116,7 +136,18 @@ export default function Profile() {
       <NavigationMenu />
       <ProfileContentContainer>
         <header>
-          <PageTitle icon={User} title="Perfil" />
+          {userIsAdifferentUser ? (
+            <Action
+              text="Voltar"
+              variant="white"
+              size="md"
+              iconBefore
+              icon={CaretLeft}
+              onClick={handleComeBackToProfile}
+            />
+          ) : (
+            <PageTitle icon={User} title="Perfil" />
+          )}
         </header>
         <main>
           <div>
@@ -144,18 +175,16 @@ export default function Profile() {
           </div>
           <UserProfileAside>
             <header>
-              <Avatar src={userData?.image} size="lg" />
-              <span>{userData?.name}</span>
-              {userData?.created_at && (
-                <small>membro desde {format(userData.created_at, 'y')}</small>
-              )}
+              <Avatar src={image} size="lg" />
+              <span>{name}</span>
+              <small>membro desde {format(created_at, 'y')}</small>
             </header>
             <ProfileAsideSeparator></ProfileAsideSeparator>
             <ProfileStatsContainer>
               <div>
                 <BookOpen />
                 <div>
-                  <span>{userData?.totalPagesReaded}</span>
+                  <span>{totalPagesReaded}</span>
                   <small>Páginas lidas</small>
                 </div>
               </div>
@@ -163,15 +192,15 @@ export default function Profile() {
               <div>
                 <Books />
                 <div>
-                  <span>{userData?.booksReviewed}</span>
-                  <small>Livros avaliado</small>
+                  <span>{booksReviewed}</span>
+                  <small>Livros avaliados</small>
                 </div>
               </div>
 
               <div>
                 <UserList />
                 <div>
-                  <span>{userData?.authorsReadedAmount}</span>
+                  <span>{authorsReadedAmount}</span>
                   <small>Autores lidos</small>
                 </div>
               </div>
@@ -179,7 +208,7 @@ export default function Profile() {
               <div>
                 <BookmarkSimple />
                 <div>
-                  <span>{userData?.mostReadedCategory.category}</span>
+                  <span>{mostReadedCategory.category}</span>
                   <small>Categoria mais lida</small>
                 </div>
               </div>
@@ -189,4 +218,118 @@ export default function Profile() {
       </ProfileContentContainer>
     </ProfileContainer>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async ({
+  req,
+  res,
+  query,
+}) => {
+  const session = await getServerSession(req, res, authOptions)
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: true,
+      },
+    }
+  }
+
+  const user = session.user as User
+
+  const user_id = String(query?.id || '')
+
+  const userIdToSearch = user_id || user.id
+
+  const userExists = await prisma.user.findUnique({
+    where: {
+      id: userIdToSearch,
+    },
+  })
+
+  if (!userExists) {
+    return {
+      notFound: true,
+    }
+  }
+
+  const userRatings = await prisma.rating.findMany({
+    where: {
+      user_id: userExists.id,
+    },
+    include: {
+      book: {
+        select: {
+          author: true,
+          total_pages: true,
+          categories: {
+            select: {
+              category: {
+                select: {
+                  name: true,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  })
+
+  let pagesReadedByUser = 0
+  const booksReviewedByUser = userRatings.length
+  const authorsReadedByUser = [] as string[]
+
+  const categoriesReadedByUser = [] as { category: string; amount: number }[]
+
+  userRatings.forEach((rating) => {
+    if (!authorsReadedByUser.includes(rating.book.author)) {
+      authorsReadedByUser.push(rating.book.author)
+    }
+
+    pagesReadedByUser += rating.book.total_pages
+
+    rating.book.categories.forEach((bookCategory) => {
+      const categoryExists = categoriesReadedByUser.find(
+        (category) => category.category === bookCategory.category.name,
+      )
+
+      if (categoryExists) {
+        categoryExists.amount += 1
+      } else {
+        categoriesReadedByUser.push({
+          category: bookCategory.category.name,
+          amount: 1,
+        })
+      }
+    })
+  })
+
+  const mostReadedCategory = { category: '', amount: 0 }
+
+  categoriesReadedByUser.forEach((category) => {
+    if (category.amount > mostReadedCategory.amount) {
+      mostReadedCategory.category = category.category
+      mostReadedCategory.amount = category.amount
+    }
+  })
+
+  const userIsAdifferentUser = user.id !== userExists.id
+
+  const userToReturn = {
+    id: userExists.id,
+    name: userExists.name,
+    image: userExists.image,
+    created_at: String(userExists.createdAt),
+    totalPagesReaded: pagesReadedByUser,
+    booksReviewed: booksReviewedByUser,
+    authorsReadedAmount: authorsReadedByUser.length,
+    mostReadedCategory,
+    userIsAdifferentUser,
+  }
+
+  return {
+    props: userToReturn,
+  }
 }
