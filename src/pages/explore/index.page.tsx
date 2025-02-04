@@ -52,7 +52,7 @@ import googleLogo from '@/assets/google-logo.svg'
 import githubLogo from '@/assets/github-logo.svg'
 import { ReviewBookCard } from '@/components/review-book-card'
 import { SignInProviderButton } from '@/components/button-sign-in-provider'
-import { NavigationMenu } from '@/components/navigation-menu'
+import { NavigationMenu } from '@/components/navigation-menu-aside'
 
 const searchFormSchema = z.object({
   search: z.string(),
