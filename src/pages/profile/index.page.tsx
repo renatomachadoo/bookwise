@@ -1,4 +1,4 @@
-import { NavigationMenu } from '@/components/navigation-menu'
+import { NavigationMenu } from '@/components/navigation-menu-aside'
 import {
   ProfileAsideSeparator,
   ProfileContainer,
